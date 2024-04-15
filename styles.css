@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(#5372f0 50%, #000000 50%);
+  background: linear-gradient(#000000 50%, #000000 50%);
 }
 
 .container {
@@ -45,7 +45,7 @@ body {
 .search-container button {
   font-size: 1em;
   border-radius: 2em;
-  background-color: #5372f0;
+  background-color: #808080;
   border: none;
   outline: none;
   color: #ffffff;
