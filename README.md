@@ -22,11 +22,9 @@ Git clone https://github.com/OpiyoLorraine/phase1-project
 https://github.com/OpiyoLorraine/phase1-project
 
 ## Technologies used
-Github
-Javascript
-HTML
+Javascript,
+HTML,
 CSS
-Cocktail DB API
 
 ## Support and contact details
 https://github.com/OpiyoLorraine/phase1-project
