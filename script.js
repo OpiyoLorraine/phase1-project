@@ -1,6 +1,7 @@
 let result = document.getElementById("result");
 let searchBtn = document.getElementById("search-btn");
 let url = "https://thecocktaildb.com/api/json/v1/1/search.php?s=";
+
 let getInfo = () => {
   let userInp = document.getElementById("user-inp").value;
   if (userInp.length == 0) {
@@ -11,41 +12,52 @@ let getInfo = () => {
       .then((data) => {
         document.getElementById("user-inp").value = "";
         console.log(data);
-        console.log(data.drinks[0]);
-        let myDrink = data.drinks[0];
-        console.log(myDrink.strDrink);
-        console.log(myDrink.strDrinkThumb);
-        console.log(myDrink.strInstructions);
-        let count = 1;
-        let ingredients = [];
-        for (let i in myDrink) {
-          let ingredient = "";
-          let measure = "";
-          if (i.startsWith("strIngredient") && myDrink[i]) {
-            ingredient = myDrink[i];
-            if (myDrink[`strMeasure` + count]) {
-              measure = myDrink[`strMeasure` + count];
-            } else {
-              measure = "";
+        result.innerHTML = ""; // Clear previous search results
+        data.drinks.forEach((drink) => {
+          let drinkContainer = document.createElement("div");
+          drinkContainer.classList.add("drink-container");
+
+          let deleteBtn = document.createElement("button");
+          deleteBtn.innerText = "Delete";
+          deleteBtn.classList.add("delete-btn");
+
+          let drinkImage = document.createElement("img");
+          drinkImage.src = drink.strDrinkThumb;
+          drinkImage.classList.add("drink-image");
+
+          let drinkName = document.createElement("h2");
+          drinkName.innerText = drink.strDrink;
+          drinkName.classList.add("drink-name");
+
+          let ingredientsList = document.createElement("ul");
+          ingredientsList.classList.add("ingredients-list");
+
+          for (let i = 1; i <= 15; i++) {
+            let ingredient = drink["strIngredient" + i];
+            let measurement = drink["strMeasure" + i];
+
+            if (ingredient && measurement) {
+              let ingredientItem = document.createElement("li");
+              ingredientItem.innerText = `${measurement} ${ingredient}`;
+              ingredientsList.appendChild(ingredientItem);
             }
-            count += 1;
-            ingredients.push(`${measure} ${ingredient}`);
           }
-        }
-        console.log(ingredients);
-        result.innerHTML = `
-      <img src=${myDrink.strDrinkThumb}>
-      <h2>${myDrink.strDrink}</h2>
-      <h3>Ingredients:</h3>
-      <ul class="ingredients"></ul>
-      <h3>Instructions:</h3>
-      <p>${myDrink.strInstructions}</p>
-      `;
-        let ingredientsCon = document.querySelector(".ingredients");
-        ingredients.forEach((item) => {
-          let listItem = document.createElement("li");
-          listItem.innerText = item;
-          ingredientsCon.appendChild(listItem);
+
+          let instructions = document.createElement("p");
+          instructions.innerText = drink.strInstructions;
+          instructions.classList.add("instructions");
+
+          drinkContainer.appendChild(deleteBtn);
+          drinkContainer.appendChild(drinkImage);
+          drinkContainer.appendChild(drinkName);
+          drinkContainer.appendChild(ingredientsList);
+          drinkContainer.appendChild(instructions);
+
+          result.appendChild(drinkContainer);
+
+          deleteBtn.addEventListener("click", () => {
+            drinkContainer.remove();
+          });
         });
       })
       .catch(() => {
@@ -53,5 +65,6 @@ let getInfo = () => {
       });
   }
 };
+
 window.addEventListener("load", getInfo);
 searchBtn.addEventListener("click", getInfo);
